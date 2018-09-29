@@ -1,5 +1,6 @@
 package com.roy.simple;
 
+import com.roy.simple.dao.EmployeeMapper;
 import com.roy.simple.model.Employee;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -40,6 +41,22 @@ public class MybatisTest {
 
         try {
             Employee employee = sqlSession.selectOne("com.roy.simple.EmployeeMapper.selectOne",1);
+            System.out.println(employee);
+
+        }finally {
+            sqlSession.close();
+        }
+    }
+
+    @Test
+    public void testGetEmpById() throws IOException {
+
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+
+        try {
+            //获取接口并调用方法返回查询结果
+            EmployeeMapper mapper = sqlSession.getMapper(EmployeeMapper.class);
+            Employee employee = mapper.getEmpById(1);
             System.out.println(employee);
 
         }finally {

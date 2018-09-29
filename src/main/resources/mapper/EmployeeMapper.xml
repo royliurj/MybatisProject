@@ -5,13 +5,10 @@
 
 <!--命名空间，使用具体方法时使用-->
 <mapper namespace="com.roy.simple.EmployeeMapper">
-
     <select id="selectOne" resultType="Employee">
         SELECT id, last_name as lastName, gender, email FROM tbl_employee where id = #{id}
     </select>
-
     <select id="selectAll" resultType="Employee">
         SELECT id, last_name as lastName, gender, email FROM tbl_employee
     </select>
-
 </mapper>
