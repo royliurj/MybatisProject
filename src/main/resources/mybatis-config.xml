@@ -35,7 +35,21 @@
         <package name="com.roy.simple.model"/>
     </typeAliases>
 
+    <!--
+        environments:可以配置多种环境, 通过default快速切换环境
+            environment:配置一个具体的环境信息, id代表当前环境的唯一标识
+                transactionManager:配置事务管理器， type事务管理器的类型 JDBC|MANAGED（别名）
+                dataSource: 数据源
+                    type：[UNPOOLED（不使用连接池）|POOLED（使用连接池）|JNDI]
+                    自定义数据源，实现DataSourceFactory接口，type是全类名
+    -->
     <environments default="development">
+        <!--测试环境-->
+        <environment id="test">
+            <transactionManager type=""></transactionManager>
+            <dataSource type=""></dataSource>
+        </environment>
+        <!--开发环境-->
         <environment id="development">
             <transactionManager type="JDBC"></transactionManager>
             <dataSource type="POOLED">
@@ -49,10 +63,23 @@
     </environments>
 
 
-    <!--配置MyBatis的Sql语句和映射配置文件-->
+    <!--
+        将Sql映射注册到全局配置中
+            resource：引用类路径下到映射文件
+            url：引用网络路径下（磁盘下）到映射文件
+            class：引用接口
+                要求：接口和映射文件同名，必须放在同一目录下
+                     没有Sql映射文件，所有到Sql都是利用注解写在接口上
+    -->
     <mappers>
-        <mapper resource="com/roy/simple/mapper/CountryMapper.xml"/>
-        <mapper resource="mapper/EmployeeMapper.xml"/>
-        <mapper resource="mapper/EmployeeMapperInterface.xml"/>
+        <!--<mapper resource="com/roy/simple/mapper/CountryMapper.xml"/>-->
+        <!--<mapper resource="mapper/EmployeeMapper.xml"/>-->
+        <!--<mapper resource="mapper/EmployeeMapperInterface.xml"/>-->
+
+        <!--&lt;!&ndash;class映射接口&ndash;&gt;-->
+        <!--<mapper class="com.roy.simple.dao.CountryMapper"/>-->
+
+        <!--批量注册，注解版的没有问题，配置版的必须将配置文件放在同接口的目录下-->
+        <package name="com.roy.simple.dao"/>
     </mappers>
 </configuration>

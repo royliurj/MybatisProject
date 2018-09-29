@@ -1,6 +1,9 @@
 package com.roy.simple;
 
+import com.roy.simple.dao.CountryMapper;
+import com.roy.simple.dao.CountryMapperAnnotation;
 import com.roy.simple.dao.EmployeeMapper;
+import com.roy.simple.model.Country;
 import com.roy.simple.model.Employee;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -72,6 +75,38 @@ public class MybatisTest {
         try {
             List<Employee> list = sqlSession.selectList("com.roy.simple.EmployeeMapper.selectAll");
             System.out.println(list);
+
+        }finally {
+            sqlSession.close();
+        }
+    }
+
+    @Test
+    public void testGetCountryById(){
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+
+        try {
+            //获取接口并调用方法返回查询结果
+            CountryMapper mapper = sqlSession.getMapper(CountryMapper.class);
+            System.out.println(mapper.getClass());
+            Country country = mapper.getCountryById(1);
+            System.out.println(country);
+
+        }finally {
+            sqlSession.close();
+        }
+    }
+
+    @Test
+    public void testGetCountryByIdAnno(){
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+
+        try {
+            //获取接口并调用方法返回查询结果
+            CountryMapperAnnotation mapper = sqlSession.getMapper(CountryMapperAnnotation.class);
+            System.out.println(mapper.getClass());
+            Country country = mapper.getCountryById(1);
+            System.out.println(country);
 
         }finally {
             sqlSession.close();

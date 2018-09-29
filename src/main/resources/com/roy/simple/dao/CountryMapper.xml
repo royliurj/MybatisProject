@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.roy.simple.dao.CountryMapper">
+
+    <!--
+        resultType 指定实体类，因为已经配置了包名，这里可以直接写类名
+    -->
+    <select id="getCountryById" resultType="com.roy.simple.model.Country">
+      select id, countryname, countrycode from country where id = #{id}
+    </select>
+</mapper>

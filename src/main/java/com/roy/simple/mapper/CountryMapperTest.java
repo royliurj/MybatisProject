@@ -31,7 +31,7 @@ public class CountryMapperTest {
     public void testSelectAll(){
         SqlSession sqlSession = sqlSessionFactory.openSession();
         try {
-            List<Country> countryList = sqlSession.selectList("selectAll");
+            List<Country> countryList = sqlSession.selectList("com.roy.simple.mapper.CountryMapper.selectAll");
             printList(countryList);
         }finally {
             sqlSession.close();
