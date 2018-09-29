@@ -7,7 +7,7 @@
     <!--
         resultType 指定实体类，因为已经配置了包名，这里可以直接写类名
     -->
-    <select id="selectAll" resultType="Country">
+    <select id="selectAll" resultType="com.roy.simple.model.Country">
       select id, countryname, countrycode from country
     </select>
 </mapper>

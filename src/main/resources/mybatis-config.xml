@@ -3,13 +3,35 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-    <!--logImpl属性配置指定使用LOG4J输出日志-->
+    <!--
+        1. 使用properties引入外部properties配置文件的内容
+            resource： 引入类路径下的配置
+            Url：引入网络路径或者磁盘路径下的配置
+        2.
+    -->
+    <properties resource="dbconfig.properties"></properties>
+
+
     <settings>
+        <!--logImpl属性配置指定使用LOG4J输出日志-->
         <setting name="logImpl" value="LOG4J"/>
+        <!--开启驼峰命名法-->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
     </settings>
 
+    <!--
+        别名处理器
+    -->
     <typeAliases>
-        <!--配置包的别名，用到的地方省略全类名-->
+        <!--
+            type： 全类名
+            alias：别名，默认别名为类名小写首字母：employee
+        -->
+        <!--<typeAlias type="com.roy.simple.model.Employee" alias="emp"/>-->
+        <!--
+            批量取别名，为某个包下的所有类批量起别名
+            配置包的别名，用到的地方省略全类名
+        -->
         <package name="com.roy.simple.model"/>
     </typeAliases>
 
@@ -25,6 +47,7 @@
             </dataSource>
         </environment>
     </environments>
+
 
     <!--配置MyBatis的Sql语句和映射配置文件-->
     <mappers>
