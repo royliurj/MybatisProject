@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+    接口式编程，动态与接口绑定
+    namespace 为接口的全类名
+-->
+<mapper namespace="com.roy.simple.dao.EmployeeMapper">
+    <select id="getEmpById" resultType="com.roy.simple.model.Employee">
+        SELECT * FROM tbl_employee where id = #{id}
+    </select>
+
+    <!--
+        parameterType 可以省略
+        useGeneratedKeys : 使用自增获取主键策略
+        keyProperty="id" : 返回的自增主键存入JavaBean的哪个属性
+    -->
+    <insert id="addEmployee" useGeneratedKeys="true" keyProperty="id">
+        insert into tbl_employee (last_name,gender,email) values(#{lastName},#{gender}, #{email})
+    </insert>
+
+    <update id="updateEmployee">
+        update tbl_employee
+        set last_name = #{lastName},
+            email = #{email},
+            gender = #{gender}
+        where id = #{id}
+    </update>
+
+    <delete id="deleteEmpById">
+        DELETE from tbl_employee where id = #{id}
+    </delete>
+
+    <!--
+        Employee getEmpByIdAndLastName(Integer id, String lastName);
+        可以：select * from tbl_employee where id = #{arg0} and last_name = #{arg1}
+            select * from tbl_employee where id = #{param1} and last_name = #{param2}
+    -->
+    <select id="getEmpByIdAndLastName" resultType="com.roy.simple.model.Employee">
+        select * from tbl_employee where id = #{id} and last_name = #{lastName}
+    </select>
+    <!--Employee getEmpByMap(Map<String,Object> map);-->
+    <select id="getEmpByMap" resultType="com.roy.simple.model.Employee">
+        select * from tbl_employee where id = #{id} and last_name = #{lastName}
+    </select>
+</mapper>
