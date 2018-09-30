@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+    接口式编程，动态与接口绑定
+    namespace 为接口的全类名
+-->
+<mapper namespace="com.roy.simple.dao.EmployeeMapperPlus">
+
+    <!--
+        自定义javabean的封装规则
+            id:方便引用
+    -->
+    <resultMap id="myEmp" type="com.roy.simple.model.Employee">
+        <!--指定列的映射
+            column：指定列
+            property：指定哪个属性
+            其他不指定的列会自动封装
+        -->
+        <id column="id" property="id"/>
+        <result column="last_name" property="lastName"/>
+    </resultMap>
+
+    <!--Employee getEmpById();-->
+    <!--
+        resultMap:自定义结果集规则
+    -->
+    <select id="getEmpById" resultMap="myEmp">
+        select * from tbl_employee where id = #{id}
+    </select>
+
+
+    <resultMap id="myEmpPlus" type="com.roy.simple.model.Employee">
+        <id column="id" property="id"/>
+        <result column="last_name" property="lastName"/>
+        <result column="d_id" property="dept.id"/>
+        <result column="dept_name" property="dept.departmentName"/>
+    </resultMap>
+
+    <resultMap id="myEmpPlus2" type="com.roy.simple.model.Employee">
+        <id column="id" property="id"/>
+        <result column="last_name" property="lastName"/>
+        <!--<result column="gender" property="gender"/>-->
+        <!--<result column="email" property="email"/>-->
+        <!--可以指定联合的javabean的对象
+            property：指定哪个属性是联合的对象
+            javaType:指定对象的类型【不能省略】
+        -->
+        <association property="dept" javaType="com.roy.simple.model.Department">
+            <id column="d_id" property="id"/>
+            <result column="dept_name" property="departmentName"/>
+        </association>
+    </resultMap>
+    <!--Employee getEmpAndDeptById(Integer id);
+        场景一：查询级联属性，一个员工隶属于一个部门
+    -->
+    <select id="getEmpAndDeptById" resultMap="myEmpPlus2">
+        select e.*, d.id d_id, d.dept_name from tbl_employee e
+        inner join tbl_dept d on e.dept_id = d.id
+        where e.id = #{id}
+    </select>
+
+    <!--使用association进行分布查询
+       1，先按照员工id获取员工信息
+       2，在根据员工的dept_id查询部门信息
+       3，把dept放入到员工里
+   -->
+    <resultMap id="MyEmpByStep" type="com.roy.simple.model.Employee">
+        <id column="id" property="id"></id>
+        <result column="last_name" property="lastName"></result>
+
+        <!--association关联对象到封装
+            select : 表明当前属性要调用到方法（获取department的方法）
+            column : 指定将那一列的值传到方法中
+        -->
+        <association property="dept" column="dept_id" select="com.roy.simple.dao.DepartmentMapper.getDeptById">
+        </association>
+    </resultMap>
+    <!--Employee getEmpByIdStep(Integer id);-->
+    <select id="getEmpByIdStep" resultMap="MyEmpByStep">
+        select * from tbl_employee where id = #{id}
+    </select>
+</mapper>
