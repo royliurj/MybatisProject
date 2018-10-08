@@ -364,4 +364,24 @@ public class MybatisTest {
             sqlSession.close();
         }
     }
+    @Test
+    public void testgetEmpsByConditionIf(){
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+
+        try {
+            //获取接口并调用方法返回查询结果
+            EmployeeMapperDynamicSql mapper = sqlSession.getMapper(EmployeeMapperDynamicSql.class);
+
+            Employee employee = new Employee();
+            employee.setId(1);
+            employee.setLastName("%3%");
+            
+            List<Employee> list = mapper.getEmpsByConditionIf(employee);
+
+            System.out.println(list);
+
+        }finally {
+            sqlSession.close();
+        }
+    }
 }
