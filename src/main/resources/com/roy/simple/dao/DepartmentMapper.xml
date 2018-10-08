@@ -13,4 +13,50 @@
         select id, dept_name departmentName from tbl_dept where id = #{id}
     </select>
 
+    <resultMap id="myDept" type="com.roy.simple.model.Department">
+        <id column="id" property="id"/>
+        <result column="dept_name" property="departmentName"/>
+
+        <!--
+            ofType集合里元素的类型
+        -->
+        <collection property="emps" ofType="com.roy.simple.model.Employee">
+            <id column="eid" property="id"/>
+            <result column="last_name" property="lastName"/>
+            <result column="email" property="email"></result>
+            <result column="gender" property="gender"></result>
+        </collection>
+    </resultMap>
+
+    <!--public Department getDeptByIdPlus(Integer id);-->
+    <select id="getDeptByIdPlus" resultMap="myDept">
+        select d.id, d.dept_name, e.id eid, e.last_name, e.gender,e.email
+        from tbl_dept d
+        left join tbl_employee e on d.id = e.dept_id
+        where d.id = #{id}
+    </select>
+
+
+    <resultMap id="myDeptStep" type="com.roy.simple.model.Department">
+        <id column="id" property="id"/>
+        <result column="dept_name" property="departmentName"/>
+        <collection property="emps"
+                    ofType="com.roy.simple.model.Employee"
+                    select="com.roy.simple.dao.EmployeeMapper.getEmpsByDeptId"
+                    column="{deptId=id}"
+                    fetchType="eager">
+            <id column="id" property="id"/>
+            <result column="last_name" property="lastName"/>
+        </collection>
+    </resultMap>
+
+    <!--public Department getDeptByIdStep(Integer id);-->
+    <select id="getDeptByIdStep" resultMap="myDeptStep">
+        select * from tbl_dept where id = #{id}
+    </select>
+
+    <!-- 扩展，多列的值传递过去
+         将多列的值封装map传递
+         column={key1=column1,key2=column2} 例如：上面获取部门分步加载员工的例子 column="{deptId=id}"
+    -->
 </mapper>

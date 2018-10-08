@@ -324,8 +324,41 @@ public class MybatisTest {
             EmployeeMapperPlus mapper = sqlSession.getMapper(EmployeeMapperPlus.class);
 
             Employee employee = mapper.getEmpByIdStep(3);
-            System.out.println(employee.getLastName());
-            System.out.println(employee.getDept().getDepartmentName());
+            System.out.println(employee);
+            System.out.println(employee.getDept());
+//            System.out.println(employee.getDept().getDepartmentName());
+
+        }finally {
+            sqlSession.close();
+        }
+    }
+    @Test
+    public void testgetDeptByIdPlus(){
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+
+        try {
+            //获取接口并调用方法返回查询结果
+            DepartmentMapper mapper = sqlSession.getMapper(DepartmentMapper.class);
+
+            Department department = mapper.getDeptByIdPlus(1);
+            System.out.println(department);
+
+        }finally {
+            sqlSession.close();
+        }
+    }
+    @Test
+    public void testgetDeptByIdStep(){
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+
+        try {
+            //获取接口并调用方法返回查询结果
+            DepartmentMapper mapper = sqlSession.getMapper(DepartmentMapper.class);
+
+            Department department = mapper.getDeptByIdStep(1);
+            System.out.println(department.getDepartmentName());
+            System.out.println(department);
+//            System.out.println(department.getEmps());
 
         }finally {
             sqlSession.close();

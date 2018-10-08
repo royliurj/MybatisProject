@@ -23,5 +23,6 @@ public interface EmployeeMapper {
     @MapKey("id")
     Map<String,Employee> getEmpMaps();
 
+    public List<Employee> getEmpsByDeptId(Integer deptId);
 
 }

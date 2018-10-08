@@ -60,4 +60,11 @@
     <select id="getEmpMaps" resultType="com.roy.simple.model.Employee">
         select * from tbl_employee
     </select>
+
+    <!--public List<Employee> getEmpsByDeptId(Integer deptId);-->
+    <select id="getEmpsByDeptId" resultType="com.roy.simple.model.Employee">
+        select * from tbl_employee where dept_id = #{deptId}
+    </select>
+
+
 </mapper>
