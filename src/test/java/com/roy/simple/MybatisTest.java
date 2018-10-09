@@ -373,13 +373,76 @@ public class MybatisTest {
             EmployeeMapperDynamicSql mapper = sqlSession.getMapper(EmployeeMapperDynamicSql.class);
 
             Employee employee = new Employee();
-            employee.setId(1);
-            employee.setLastName("%3%");
-            
+//            employee.setId(3);
+            employee.setLastName("%r%");
+            employee.setGender("1");
+
             List<Employee> list = mapper.getEmpsByConditionIf(employee);
 
             System.out.println(list);
 
+        }finally {
+            sqlSession.close();
+        }
+    }
+    @Test
+    public void testgetEmpsByConditionIfTrim(){
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+
+        try {
+            //获取接口并调用方法返回查询结果
+            EmployeeMapperDynamicSql mapper = sqlSession.getMapper(EmployeeMapperDynamicSql.class);
+
+            Employee employee = new Employee();
+            employee.setId(3);
+            employee.setLastName("%r%");
+//            employee.setGender("1");
+
+            List<Employee> list = mapper.getEmpsByConditionIfTrim(employee);
+
+            System.out.println(list);
+
+        }finally {
+            sqlSession.close();
+        }
+    }
+    @Test
+    public void testgetEmpsByConditionChoose(){
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+
+        try {
+            //获取接口并调用方法返回查询结果
+            EmployeeMapperDynamicSql mapper = sqlSession.getMapper(EmployeeMapperDynamicSql.class);
+
+            Employee employee = new Employee();
+//            employee.setId(3);
+//            employee.setLastName("%r%");
+//            employee.setGender("1");
+
+            List<Employee> list = mapper.getEmpsByConditionChoose(employee);
+
+            System.out.println(list);
+
+        }finally {
+            sqlSession.close();
+        }
+    }
+    @Test
+    public void testupdateEmp(){
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+
+        try {
+            //获取接口并调用方法返回查询结果
+            EmployeeMapperDynamicSql mapper = sqlSession.getMapper(EmployeeMapperDynamicSql.class);
+
+            Employee employee = new Employee();
+            employee.setId(3);
+            employee.setLastName("Roy123");
+//            employee.setGender("1");
+
+            mapper.updateEmp(employee);
+
+            sqlSession.commit();
         }finally {
             sqlSession.close();
         }

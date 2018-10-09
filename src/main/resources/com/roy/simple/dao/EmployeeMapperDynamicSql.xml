@@ -14,29 +14,81 @@
 
     <!--查询员工，要求携带了哪个字段查询条件就带上这个字段的值-->
     <!--public List<Employee> getEmpsByConditionIf(Employee employee);-->
-    <select id="getEmpsByConditionIf" resultType="com.roy.simple.model.Department">
+    <select id="getEmpsByConditionIf" resultType="com.roy.simple.model.Employee">
       SELECT * FROM tbl_employee
-      WHERE 
-      <!--
-        test: 判断表达式（OGNL）
-        从参数中取值进行判断
-      -->
-      <if test="id!=null">
-          id=#{id}
-      </if>
-      <if test="lastName!=null and lastName!=''">
-          AND last_name LIKE #{lastName}
-      </if>
-      <if test="email!=null and email.trim()!=''">
-          AND email=#{email}
-      </if>
-      <!--ognl会进行字符串与数字的转换判断-->
-      <if test="gender==0 or gender==1">
-          AND gender=#{gender}
-      </if>
-
+      <where>
+          <!--
+            test: 判断表达式（OGNL）
+            从参数中取值进行判断
+          -->
+          <if test="id != null">
+              id=#{id}
+          </if>
+          <if test="lastName != null and lastName != ''">
+              AND last_name LIKE #{lastName}
+          </if>
+          <if test="email != null and email.trim() != ''">
+              AND email=#{email}
+          </if>
+          <!--ognl会进行字符串与数字的转换判断-->
+          <if test="gender == 0 or gender == 1">
+              AND gender=#{gender}
+          </if>
+      </where>
     </select>
 
+    <!--public List<Employee> getEmpsByConditionIfTrim(Employee employee);-->
+    <select id="getEmpsByConditionIfTrim" resultType="com.roy.simple.model.Employee">
+        SELECT * FROM tbl_employee
+        <!--后面多出来的and或者or标签不能解决
+        prefix - 前缀，trim标签体中是整个字符串拼串后的结果
+        prefixOverrides - 前缀覆盖，去掉整个字符串多余的字符
+        suffix - 后缀
+        suffixOverrides - 后缀覆盖
+        -->
+        <trim prefix="where" prefixOverrides="" suffix="" suffixOverrides="and">
+            <if test="id != null">
+                id=#{id} AND
+            </if>
+            <if test="lastName != null and lastName != ''">
+                last_name LIKE #{lastName} AND
+            </if>
+            <if test="email != null and email.trim() != ''">
+                email=#{email} AND
+            </if>
+            <if test="gender == 0 or gender == 1">
+                gender=#{gender}
+            </if>
+        </trim>
+    </select>
 
+    <!--public List<Employee> getEmpsByConditionChoose(Employee employee);-->
+    <select id="getEmpsByConditionChoose" resultType="com.roy.simple.model.Employee">
+        SELECT * FROM tbl_employee
+        <where>
+            <choose>
+                <when test="id != null">id = #{id}</when>
+                <when test="lastName != null">last_name LIKE #{lastName}</when>
+                <when test="email != null">email = #{email}</when>
+                <otherwise>gender = 0</otherwise>
+            </choose>
+        </where>
+    </select>
 
+    <!--public void updateEmp(Employee employee);-->
+    <update id="updateEmp">
+        update tbl_employee
+        <set>
+            <if test="lastName != null">
+                last_name = #{lastName},
+            </if>
+            <if test="email != null">
+                email = #{email},
+            </if>
+            <if test="gender != null">
+                gender = #{gender}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
 </mapper>
