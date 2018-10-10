@@ -91,4 +91,63 @@
         </set>
         where id = #{id}
     </update>
+
+    <!--public List<Employee> getEmpsByConditionForeach(@Param("ids") List<Integer> ids);-->
+    <select id="getEmpsByConditionForeach" resultType="com.roy.simple.model.Employee">
+        select * from tbl_employee
+        <!--
+            collection: 指定要遍历的集合
+                list类型的参数会特殊处理封装在map中，map的key就叫list
+            item：将当期遍历出的元素赋值给指定的变量
+            #{变量名} 去除变量值也就是当前遍历出的元素
+            separator: 每个元素的分隔符
+            open: 遍历出所有结果拼接一个开始的字符
+            close:遍历出所有结果拼接一个结束的字符
+            index:索引，遍历list是索引；遍历map的时候，index表示map的key，item是map的值
+        -->
+        <foreach collection="ids"
+                 item="item_id"
+                 open="where id in ("
+                 close=")"
+                 separator=",">
+            #{item_id}
+        </foreach>
+    </select>
+
+    <!--public void admEmps(@Param("emps") List<Employee> emps);-->
+    <insert id="admEmps">
+      INSERT INTO tbl_employee (
+        <!--引入外部定义的-->
+        <include refid="insertColumn"></include>
+        )
+      VALUES
+      <foreach collection="emps" item="emp" separator=",">
+          (#{emp.lastName},#{emp.email},#{emp.gender},#{emp.dept.id})
+      </foreach>
+    </insert>
+
+    <!--public List<Employee> getEmpsInnerParameter(Employee employee);-->
+    <select id="getEmpsInnerParameter" resultType="com.roy.simple.model.Employee">
+      <if test="_databaseId == 'mysql'">
+          select * from tbl_employee
+          <if test="_parameter != null">
+              wehre last_name = #{lastName}
+          </if>
+      </if>
+      <if test="_databaseId == 'sqlserver'">
+          select * from employee
+      </if>
+    </select>
+
+    <!--public List<Employee> getEmpsBind(Employee employee);-->
+    <select id="getEmpsBind" resultType="com.roy.simple.model.Employee">
+        <bind name="_lastName" value="'%' + lastName +'%'"></bind>
+        select * from tbl_employee where last_name LIKE #{_lastName}
+    </select>
+
+    <!--抽取可重用的Sql片段，方便后边引用-->
+    <sql id="insertColumn">
+        last_name, email, gender, dept_id
+    </sql>
+
 </mapper>

@@ -14,9 +14,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MybatisTest {
 
@@ -443,6 +441,77 @@ public class MybatisTest {
             mapper.updateEmp(employee);
 
             sqlSession.commit();
+        }finally {
+            sqlSession.close();
+        }
+    }
+
+    @Test
+    public void testgetEmpsByConditionForeach(){
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+
+        try {
+            //获取接口并调用方法返回查询结果
+            EmployeeMapperDynamicSql mapper = sqlSession.getMapper(EmployeeMapperDynamicSql.class);
+
+            List<Employee> list = mapper.getEmpsByConditionForeach(Arrays.asList(3,4,5));
+
+            System.out.println(list);
+
+        }finally {
+            sqlSession.close();
+        }
+    }
+    @Test
+    public void testadmEmps(){
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+
+        try {
+            //获取接口并调用方法返回查询结果
+            EmployeeMapperDynamicSql mapper = sqlSession.getMapper(EmployeeMapperDynamicSql.class);
+
+            Employee employee = new Employee();
+            employee.setLastName("new2");
+            employee.setGender("1");
+            employee.setEmail("new1@123");
+            Department department = new Department();
+            department.setId(1);
+            employee.setDept(department);
+
+            List<Employee> emps = new ArrayList<Employee>();
+            emps.add(employee);
+
+            Employee employee1 = new Employee();
+            employee1.setLastName("new3");
+            employee1.setGender("1");
+            employee1.setEmail("new3@123");
+            Department department1 = new Department();
+            department1.setId(2);
+            employee1.setDept(department1);
+            emps.add(employee1);
+
+            mapper.admEmps(emps);
+
+            sqlSession.commit();
+        }finally {
+            sqlSession.close();
+        }
+    }
+    @Test
+    public void testgetEmpsBind(){
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+
+        try {
+            //获取接口并调用方法返回查询结果
+            EmployeeMapperDynamicSql mapper = sqlSession.getMapper(EmployeeMapperDynamicSql.class);
+
+            Employee employee = new Employee();
+            employee.setLastName("o");
+
+            List<Employee> list = mapper.getEmpsBind(employee);
+
+            System.out.println(list);
+
         }finally {
             sqlSession.close();
         }
