@@ -516,4 +516,50 @@ public class MybatisTest {
             sqlSession.close();
         }
     }
+
+
+    @Test
+    public void testFirstLevelCache(){
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+
+        try {
+            //获取接口并调用方法返回查询结果
+            EmployeeMapper mapper = sqlSession.getMapper(EmployeeMapper.class);
+
+            Employee employee = mapper.getEmpById(3);
+
+            System.out.println(employee);
+//            sqlSession.clearCache();
+            Employee employee1 = mapper.getEmpById(3);
+            System.out.println(employee1);
+            System.out.println(employee == employee1);
+
+        }finally {
+            sqlSession.close();
+        }
+    }
+
+
+    @Test
+    public void testSecondLevelCache(){
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        SqlSession sqlSession2 = sqlSessionFactory.openSession();
+
+        try {
+            //获取接口并调用方法返回查询结果
+            EmployeeMapper mapper = sqlSession.getMapper(EmployeeMapper.class);
+            EmployeeMapper mapper2 = sqlSession2.getMapper(EmployeeMapper.class);
+
+            Employee employee = mapper.getEmpById(3);
+
+            System.out.println(employee);
+
+            sqlSession.close();
+            Employee employee2 = mapper2.getEmpById(3);
+
+            System.out.println(employee2);
+            sqlSession2.close();
+        }finally {
+        }
+    }
 }

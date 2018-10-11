@@ -118,7 +118,9 @@
     <insert id="admEmps">
       INSERT INTO tbl_employee (
         <!--引入外部定义的-->
-        <include refid="insertColumn"></include>
+        <include refid="insertColumn">
+            <property name="testColumn" value="aaa"></property>
+        </include>
         )
       VALUES
       <foreach collection="emps" item="emp" separator=",">
@@ -147,7 +149,7 @@
 
     <!--抽取可重用的Sql片段，方便后边引用-->
     <sql id="insertColumn">
-        last_name, email, gender, dept_id
+        last_name, email, gender, dept_id, ${testColumn}
     </sql>
 
 </mapper>

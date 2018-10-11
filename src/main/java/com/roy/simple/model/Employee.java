@@ -1,6 +1,10 @@
 package com.roy.simple.model;
 
-public class Employee {
+import java.io.Serializable;
+
+public class Employee implements Serializable {
+
+    private static final long serialVersionUID = -5060891744572229576L;
     private Integer id;
     private String lastName;
     private String email;

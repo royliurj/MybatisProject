@@ -8,6 +8,8 @@
     namespace 为接口的全类名
 -->
 <mapper namespace="com.roy.simple.dao.DepartmentMapper">
+    <cache-ref namespace="com.roy.simple.dao.EmployeeMapper"/>
+
     <!--Department getDeptById(Integer id);-->
     <select id="getDeptById" resultType="com.roy.simple.model.Department">
         select id, dept_name departmentName from tbl_dept where id = #{id}
