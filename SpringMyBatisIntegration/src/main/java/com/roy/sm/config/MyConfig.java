@@ -1,7 +1,12 @@
 package com.roy.sm.config;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
+import com.roy.sm.dao.EmployeeMapper;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
+import org.mybatis.spring.SqlSessionTemplate;
+import org.mybatis.spring.annotation.MapperScan;
+import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +26,7 @@ import java.util.List;
 @EnableTransactionManagement
 @Configuration
 @ComponentScan(basePackages = "com.roy.sm")
+//@MapperScan(basePackages = "com.roy.sm.dao")
 public class MyConfig {
     //配置数据源
     @Bean
@@ -39,21 +45,25 @@ public class MyConfig {
         return new DataSourceTransactionManager(dataSource);
     }
 
-    //SqlSessionFactoryBean
+    //自动扫描Mapper，等同于注解@MapperScan(basePackages = "com.roy.sm.dao")
     @Bean
-    public SqlSessionFactoryBean sqlSessionFactoryBean(DataSource dataSource) throws IOException {
+    public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dataSource);
 
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         //设置全局配置文件的位置
-//        sqlSessionFactoryBean.setConfigLocation(new ClassPathResource("mybatis-config.xml"));
-        sqlSessionFactoryBean.setConfigLocation(resolver.getResource("classpath:mybatis-cnofig.xml"));
-//        //指定mapper配置文件的位置
-//        List<ClassPathResource> resources = new ArrayList<ClassPathResource>();
-//        resources.add(new ClassPathResource("mybatis/mapper/EmployeeMapper.xml"));
-//        sqlSessionFactoryBean.setMapperLocations((Resource[]) resources.toArray());
+        sqlSessionFactoryBean.setConfigLocation(resolver.getResource("classpath:mybatis-config.xml"));
+       //指定mapper配置文件的位置
         sqlSessionFactoryBean.setMapperLocations(resolver.getResources("classpath:mybatis/mapper/*.xml"));
-        return sqlSessionFactoryBean;
+        return sqlSessionFactoryBean.getObject();
+    }
+
+    @Bean
+    public MapperScannerConfigurer mapperScannerConfigurer(){
+        MapperScannerConfigurer mScannerConfigurer = new MapperScannerConfigurer();
+        mScannerConfigurer.setSqlSessionFactoryBeanName("sqlSessionFactory");
+        mScannerConfigurer.setBasePackage("com.roy.sm.dao");
+        return mScannerConfigurer;
     }
 }
