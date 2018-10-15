@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/MyBatisPlus/MyBatisPlus.iml" filepath="$PROJECT_DIR$/MyBatisPlus/MyBatisPlus.iml" />
       <module fileurl="file://$PROJECT_DIR$/MybatisProject.iml" filepath="$PROJECT_DIR$/MybatisProject.iml" />
       <module fileurl="file://$PROJECT_DIR$/SpringMyBatisIntegration/SpringMyBatisIntegration.iml" filepath="$PROJECT_DIR$/SpringMyBatisIntegration/SpringMyBatisIntegration.iml" />
     </modules>

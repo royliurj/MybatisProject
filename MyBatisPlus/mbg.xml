@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <!--<classPathEntry location="/Program Files/IBM/SQLLIB/java/db2java.zip" />-->
+
+    <!--
+        MyBatis3Simple：简单版的
+        MyBatis3:可以生成带where动态标签的
+    -->
+    <context id="DB2Tables" targetRuntime="MyBatis3">
+        <!--如何连接到目标数据库-->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql:///MyDataBase"
+                        userId="root"
+                        password="root">
+        </jdbcConnection>
+
+        <!--类型解析器-->
+        <javaTypeResolver >
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+
+        <!--指定javabean的生成策略
+            targetPackage : 目标包
+            targetProject : 目标工程 .\src当前工程
+        -->
+        <javaModelGenerator targetPackage="com.roy.plugs.bean" targetProject=".\src\main\java">
+            <property name="enableSubPackages" value="true" />
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+
+        <!--Sql映射的生成策略-->
+        <sqlMapGenerator targetPackage="com.roy.plugs.dao"  targetProject=".\src\main\resources">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+
+        <!--java接口所在的位置-->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.roy.plugs.dao"  targetProject=".\src\main\java">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+
+        <!--指定逆向分析那些表
+            根据这些表生成javabean
+        -->
+        <table tableName="tbl_employee" domainObjectName="Employee"/>
+        <table tableName="tbl_dept" domainObjectName="Department"/>
+
+    </context>
+</generatorConfiguration>

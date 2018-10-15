@@ -10,6 +10,7 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>SpringMyBatisIntegration</module>
+        <module>MyBatisPlus</module>
     </modules>
 
     <!--设置源代码编码方式-->
