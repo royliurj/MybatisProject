@@ -93,4 +93,6 @@ public interface EmployeeMapper {
      * @mbg.generated Mon Oct 15 10:33:27 CST 2018
      */
     int updateByPrimaryKey(Employee record);
+
+    public List<Employee> getEmps();
 }

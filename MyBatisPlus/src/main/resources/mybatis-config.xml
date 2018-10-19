@@ -3,6 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+
     <!--
         1. 使用properties引入外部properties配置文件的内容
             resource： 引入类路径下的配置
@@ -40,6 +41,19 @@
         -->
         <package name="com.roy.simple.model"/>
     </typeAliases>
+
+
+    <plugins>
+        <!--<plugin interceptor="com.roy.plugs.plugin.MyFirstPlugin">-->
+            <!--<property name="name" value="root"/>-->
+            <!--<property name="password" value="root"/>-->
+        <!--</plugin>-->
+        <!-- com.github.pagehelper为PageHelper类所在包名 -->
+        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+            <!-- 使用下面的方式配置参数，后面会有所有的参数介绍 -->
+            <property name="param1" value="value1"/>
+        </plugin>
+    </plugins>
 
     <!--
         environments:可以配置多种环境, 通过default快速切换环境

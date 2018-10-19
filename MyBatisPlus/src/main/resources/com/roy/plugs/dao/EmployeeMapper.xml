@@ -283,4 +283,9 @@
       dept_id = #{deptId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <!--public List<Employee> getEmps();-->
+  <select id="getEmps" resultType="com.roy.plugs.bean.Employee">
+      select * from tbl_employee
+  </select>
 </mapper>

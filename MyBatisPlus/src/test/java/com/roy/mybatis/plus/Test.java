@@ -1,5 +1,7 @@
 package com.roy.mybatis.plus;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.roy.plugs.bean.Employee;
 import com.roy.plugs.bean.EmployeeExample;
 import com.roy.plugs.dao.EmployeeMapper;
@@ -85,9 +87,32 @@ public class Test {
 
             employeeExample.or(criteria2);
             List<Employee> list = mapper.selectByExample(employeeExample);
+
             for (Employee employee : list) {
                 System.out.println(employee);
             }
+        }finally {
+            sqlSession.close();
+        }
+    }
+
+    @org.junit.Test
+    public void testPage() throws IOException {
+
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+
+        try {
+            //获取接口并调用方法返回查询结果
+            EmployeeMapper mapper = sqlSession.getMapper(EmployeeMapper.class);
+            Page<Object> objects = PageHelper.startPage(1, 5);
+            List<Employee> list = mapper.getEmps();
+            System.out.println("个数:"+list.size());
+            for (Employee e : list){
+                System.out.println(e);
+            }
+
+            System.out.println("当前页码：" + objects.getPageNum() + "， 总记录数：" + objects.getTotal() + ", 总页数：" + objects.getPages());
+
         }finally {
             sqlSession.close();
         }
